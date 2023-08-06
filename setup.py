@@ -1,11 +1,11 @@
 from setuptools import setup
 
-setup(name='minimum-python-package',
-      version='0.1',
-      description='Hodor',
-      url='https://github.com/hbergen/minimal-python-package',
-      author='hbergen',
-      author_email='Hodor@Winterfell.com',
+setup(name='Financial Tool',
+      version='0.0',
+      description='Financial Tool',
+      url='https://github.com/howardya/financialtool',
+      author='howardya',
+      author_email='howardya@howardya.com',
       license='MIT',
-      packages=['winterfell'],
+      packages=['financialtool'],
       zip_safe=False)
