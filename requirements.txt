@@ -1,13 +1,38 @@
+appdirs==1.4.4
+beautifulsoup4==4.12.2
 certifi==2023.7.22
 charset-normalizer==3.2.0
+contourpy==1.1.0
+cycler==0.11.0
+Financial-Tool @ file:///Users/beebee/Work/financialtool
+fonttools==4.42.0
+frozendict==2.3.8
+html5lib==1.1
 idna==3.4
+kiwisolver==1.4.4
 lxml==4.9.3
+matplotlib==3.7.2
+minimum-python-package @ git+https://github.com/hbergen/minimal-python-package.git@0bad9a2892165ad72b5733d9b99f91ab196f97aa
+multitasking==0.0.11
 numpy==1.25.2
+packaging==23.1
 pandas==2.0.3
 pandas-datareader==0.10.0
+Pillow==10.0.0
+ply==3.11
+pyparsing==3.0.9
+PyQt5-sip==12.11.0
+PyQt6==6.5.2
+PyQt6-Qt6==6.5.2
+PyQt6-sip==13.5.2
 python-dateutil==2.8.2
 pytz==2023.3
 requests==2.31.0
+sip @ file:///Users/cbousseau/work/recipes/ci_py311/sip_1677923661665/work
 six==1.16.0
+soupsieve==2.4.1
+toml @ file:///tmp/build/80754af9/toml_1616166611790/work
 tzdata==2023.3
 urllib3==2.0.4
+webencodings==0.5.1
+yfinance==0.2.28

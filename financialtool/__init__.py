@@ -1,1 +1,1 @@
-from . import factor
+from . import famafrench
