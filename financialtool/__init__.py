@@ -1,1 +1,1 @@
-from . import famafrench
+from .famafrench import *
