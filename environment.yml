@@ -73,7 +73,7 @@ dependencies:
       - numpy==1.25.2
       - packaging==23.1
       - pandas==2.0.3
-      - pandas-datareader==0.10.0
+      - pandas-datareader==0.11.0.dev0+18.gd74e48f
       - pillow==10.0.0
       - pyparsing==3.0.9
       - pyqt6==6.5.2
