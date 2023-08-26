@@ -6,10 +6,10 @@ def get_window_start_date(current_date, window):
     month = current_date.month
     year = current_date.year
     dayofweek = current_date.dayofweek # monday is 0
+    days_to_go_back = 0
 
     if window == 'QTD':
         day = 1
-
         if month <= 3:
             month = 1
         elif month <= 6:
@@ -18,10 +18,29 @@ def get_window_start_date(current_date, window):
             month = 7
         else:
             month = 10
+    elif window == 'MTD':
+        day = 1
+    elif window == 'WTD':
+        days_to_go_back = dayofweek
+    elif window == 'YTD':
+        day = 1
+        month = 1
+    elif window == 'T-1':
+        days_to_go_back = 1
+    elif window == 'T-1B':
+        if dayofweek == 0: # Monday
+            days_to_go_back = 3
+        elif dayofweek == 6: # Sunday
+            days_to_go_back = 2
+        elif dayofweek == 5:  # Saturday
+            days_to_go_back = 1
     else:
         raise ValueError(f'Argument window: {window} not yet implemented.')
 
-    return datetime.date(year, month, day)
+    start_date = datetime.date(year, month, day)
+    start_date = start_date + datetime.timedelta(-days_to_go_back)
+
+    return start_date
 
 
 def convert_tenor_to_days(tenors):
