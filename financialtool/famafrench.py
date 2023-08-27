@@ -1,6 +1,12 @@
 import pandas_datareader as pdr
 import pandas as pd
 import datetime
+from .utils import get_window_start_date
+
+__ALL__ = [
+    'get_famafrench_factor_timeseries',
+    'get_famafrench_performance_grid'
+]
 
 
 def get_famafrench_factor_timeseries(
@@ -42,3 +48,37 @@ def get_famafrench_factor_timeseries(
         datasets = datasets.resample('AS', label='left', closed='right').apply(lambda s: s.add(1).prod().add(-1))
 
     return datasets
+
+
+def get_famafrench_performance_grid(
+    portfolio='size+value',
+    window='QTD'
+):
+    start_date = datetime.date(1900, 1, 1)
+    end_date = pd.Timestamp.max.normalize().to_pydatetime()
+
+    if portfolio == 'size+value':
+        dataset_type = '6_Portfolios_2x3_daily'
+    else:
+        raise ValueError(f'Parameter portfolio provided: {portfolio} is not yet implemented.')
+
+    datasets = pdr.get_data_famafrench(dataset_type, start=start_date, end=end_date)
+    datasets = datasets[0] # value weighted.
+    datasets = datasets.div(100)
+
+    latest_date = datasets.index[-1]
+
+    window_start_date = get_window_start_date(latest_date, window)
+    datasets_window_returns = datasets.loc[window_start_date:latest_date].add(1).prod().add(-1)
+
+    returns_table = pd.DataFrame({
+        'Returns': datasets_window_returns.values,
+        'Size': ['SMALL']*3 + ['BIG']*3,
+        'Style': ['Growth', 'Mid', 'Value']*2
+    }).pivot_table(index='Style', columns='Size')
+
+    returns_table.columns = returns_table.columns.get_level_values(1)
+
+    return returns_table
+
+
