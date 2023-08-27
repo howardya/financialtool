@@ -1,4 +1,5 @@
 import pandas_datareader as pdr
+import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 import datetime
@@ -11,7 +12,7 @@ FRED_TENORS = pd.DataFrame({
 })
 
 
-def get_yield_curve(country='US', dates=None, plot=False, append_latest=True):
+def get_yield_curve(country='US', dates=None, append_latest=True, plot=False, plot_slope=True):
     if country != 'US':
         raise ValueError(f'country provided: {country} not yet implemented.')
 
@@ -54,12 +55,21 @@ def get_yield_curve(country='US', dates=None, plot=False, append_latest=True):
     rates_data.columns = dates_string
 
     if plot:
-        ax = rates_data.plot()
-        ax.set_xticks(tenor_in_days)
+        ax = rates_data.plot(title=f'Yield Curve - {country}')
+        _ = ax.set_xticks(tenor_in_days)
         x_labels = tenor_list.copy()
         x_labels[1] = None
         x_labels[2] = None
-        ax.set_xticklabels(x_labels)
+        _ = ax.set_xticklabels(x_labels)
+
+        if plot_slope:
+            slope_data = rates_data.loc[pd.Series(tenor_in_days, index=tenor_list)[['2Y', '10Y']].to_list()].copy()
+            for line in ax.get_lines():
+                color = line.get_color()
+                label = line.get_label()
+                points_x = slope_data.index.to_list()
+                points_y = slope_data[label].to_list()
+                ax.plot(points_x, points_y, linestyle='--', color=color, alpha=0.4)
 
     return rates_data, tenor_list, tenor_in_days
 
