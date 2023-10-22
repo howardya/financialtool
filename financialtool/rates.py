@@ -1,5 +1,5 @@
 import pandas_datareader as pdr
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 import datetime
@@ -11,6 +11,21 @@ FRED_TENORS = pd.DataFrame({
     'Country': ['US'] * 11
 })
 
+
+def get_yield_historical_data(tenors=None, country='US'):
+    if tenors is None:
+        tenors_tickers = FRED_TENORS.query(f'Country=="{country}"')['Ticker']
+    else:
+        if type(tenors) is not list:
+            tenors = [tenors]
+        tenors_tickers = FRED_TENORS[FRED_TENORS['Tenor'].isin(tenors)].query(f'Country=="{country}"')['Ticker']
+
+    rates_data = pdr.get_data_fred(tenors_tickers, datetime.datetime(1900, 1, 1))
+    rates_data.index = rates_data.index.to_pydatetime()
+
+    rates_data.columns = FRED_TENORS.set_index('Ticker').loc[rates_data.columns]['Tenor'].to_list()
+
+    return rates_data
 
 def get_yield_curve(country='US', dates=None, append_latest=True, plot=False, plot_slope=True):
     if country != 'US':
